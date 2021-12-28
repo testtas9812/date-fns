@@ -4,9 +4,6 @@ import assert from 'assert'
 import intlFormatDistance from '.'
 
 describe('intlFormatDistance', () => {
-  // if (process.env.TZ !== 'America/New_York')
-  //   throw new Error('The test must be run with TZ=America/New_York')
-
   const AmericanTZOnly = process.env.TZ === 'America/New_York' ? it : it.skip
 
   describe('default options', () => {
@@ -572,6 +569,13 @@ describe('intlFormatDistance', () => {
         { unit: 'minute' }
       )
       assert(result === 'in 60 minutes')
+    })
+
+    it('prints `сейчас`', () => {
+      const result = intlFormatDistance(new Date(), new Date(), {
+        locale: 'ru',
+      })
+      assert(result === 'сейчас')
     })
   })
 })
