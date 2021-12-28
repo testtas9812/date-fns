@@ -4,7 +4,11 @@ import assert from 'assert'
 import intlFormatDistance from '.'
 
 describe('intlFormatDistance', () => {
-  process.env.TZ = 'America/New_York'
+  // if (process.env.TZ !== 'America/New_York')
+  //   throw new Error('The test must be run with TZ=America/New_York')
+
+  const AmericanTZOnly = process.env.TZ === 'America/New_York' ? it : it.skip
+
   describe('default options', () => {
     it('prints out `now` for the same dates', () => {
       const result = intlFormatDistance(
@@ -340,7 +344,7 @@ describe('intlFormatDistance', () => {
       assert(result === 'tomorrow')
     })
 
-    it('prints `next mo`', () => {
+    AmericanTZOnly('prints `next mo`', () => {
       const result = intlFormatDistance(
         new Date(1985, 5, 4, 10, 30, 0),
         new Date(1985, 4, 4, 10, 30, 0),
@@ -349,7 +353,7 @@ describe('intlFormatDistance', () => {
       assert(result === 'next mo')
     })
 
-    it('prints `next yr.`', () => {
+    AmericanTZOnly('prints `next yr.`', () => {
       const result = intlFormatDistance(
         new Date(1986, 4, 5, 10, 30, 0),
         new Date(1985, 4, 5, 10, 30, 0),
