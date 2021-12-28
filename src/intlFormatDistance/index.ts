@@ -197,7 +197,7 @@ import requiredArgs from '../_lib/requiredArgs/index'
  * )
  * //=> 'in 60 Minuten'
  */
-interface Options {
+interface IntlFormatDistanceOptions {
   unit?: Unit
   locale?: Intl.UnicodeBCP47LocaleIdentifier
   localeMatcher?: Intl.RelativeTimeFormatLocaleMatcher
@@ -208,7 +208,7 @@ interface Options {
 export default function intlFormatDistance(
   date: Date | number,
   baseDate: Date | number,
-  options: Options = { numeric: 'auto' }
+  options: IntlFormatDistanceOptions = { numeric: 'auto' }
 ): String {
   requiredArgs(2, arguments)
 
