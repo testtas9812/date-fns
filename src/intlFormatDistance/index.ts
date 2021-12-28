@@ -16,7 +16,6 @@ import differenceInHours from '../differenceInHours/index'
 import differenceInMinutes from '../differenceInMinutes/index'
 import differenceInSeconds from '../differenceInSeconds/index'
 import toDate from '../toDate/index'
-import type { Unit } from '../types'
 import requiredArgs from '../_lib/requiredArgs/index'
 
 /**
@@ -198,7 +197,7 @@ import requiredArgs from '../_lib/requiredArgs/index'
  * //=> 'in 60 Minuten'
  */
 interface IntlFormatDistanceOptions {
-  unit?: Unit
+  unit?: Intl.RelativeTimeFormatUnit
   locale?: Intl.UnicodeBCP47LocaleIdentifier
   localeMatcher?: Intl.RelativeTimeFormatLocaleMatcher
   numeric?: Intl.RelativeTimeFormatNumeric
