@@ -207,7 +207,7 @@ interface IntlFormatDistanceOptions {
 export default function intlFormatDistance(
   date: Date | number,
   baseDate: Date | number,
-  options: IntlFormatDistanceOptions = { numeric: 'auto' }
+  options?: IntlFormatDistanceOptions
 ): String {
   requiredArgs(2, arguments)
 
