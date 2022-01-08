@@ -15,7 +15,6 @@ const formattingTokensRegExp = /(\w)\1*|''|'(''|[^'])+('|$)|./g
 
 const escapedStringRegExp = /^'([^]*?)'?$/
 const doubleQuoteRegExp = /''/g
-const unescapedLatinCharacterRegExp = /[a-zA-Z]/
 
 /**
  * @name lightFormat
@@ -65,7 +64,6 @@ const unescapedLatinCharacterRegExp = /[a-zA-Z]/
  * @param date - the original date
  * @param format - the string of tokens
  * @returns the formatted date string
- * @throws {RangeError} format string contains an unescaped latin alphabet character
  *
  * @example
  * const result = lightFormat(new Date(2014, 1, 11), 'yyyy-MM-dd')
@@ -106,14 +104,6 @@ export default function lightFormat(
       const formatter = formatters[firstCharacter as Token]
       if (formatter) {
         return formatter(utcDate, substring)
-      }
-
-      if (firstCharacter.match(unescapedLatinCharacterRegExp)) {
-        throw new RangeError(
-          'Format string contains an unescaped latin alphabet character `' +
-            firstCharacter +
-            '`'
-        )
       }
 
       return substring
