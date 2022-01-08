@@ -19,7 +19,6 @@ describe('lastDayOfWeek', () => {
   it('allows to specify which day is the first day of the week in locale', () => {
     const date = new Date(2014, 8 /* Sep */, 2, 11, 55, 0)
     const result = lastDayOfWeek(date, {
-      // @ts-expect-error
       locale: {
         options: { weekStartsOn: 1 },
       },
@@ -31,7 +30,6 @@ describe('lastDayOfWeek', () => {
     const date = new Date(2014, 8 /* Sep */, 2, 11, 55, 0)
     const result = lastDayOfWeek(date, {
       weekStartsOn: 1,
-      // @ts-expect-error
       locale: {
         options: { weekStartsOn: 0 },
       },
@@ -95,19 +93,5 @@ describe('lastDayOfWeek', () => {
   it('returns `Invalid Date` if the given date is invalid', () => {
     const result = lastDayOfWeek(new Date(NaN))
     assert(result instanceof Date && isNaN(result.getTime()))
-  })
-
-  it('throws `RangeError` if `options.weekStartsOn` is not convertable to 0, 1, ..., 6 or undefined', () => {
-    const block = () =>
-      lastDayOfWeek(new Date(2014, 8 /* Sep */, 2, 11, 55, 0), {
-        // @ts-expect-error
-        weekStartsOn: NaN,
-      })
-    assert.throws(block, RangeError)
-  })
-
-  it('throws TypeError exception if passed less than 1 argument', () => {
-    // @ts-expect-error
-    assert.throws(lastDayOfWeek.bind(null), TypeError)
   })
 })
