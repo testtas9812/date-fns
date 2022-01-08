@@ -1,9 +1,6 @@
-import toDate from '../toDate/index'
+import subMilliseconds from '../subMilliseconds/index'
 import formatters from '../_lib/format/lightFormatters/index'
 import getTimezoneOffsetInMilliseconds from '../_lib/getTimezoneOffsetInMilliseconds/index'
-import isValid from '../isValid/index'
-import subMilliseconds from '../subMilliseconds/index'
-import requiredArgs from '../_lib/requiredArgs/index'
 
 // This RegExp consists of three parts separated by `|`:
 // - (\w)\1* matches any sequences of the same letter
@@ -81,13 +78,7 @@ export default function lightFormat(
   dirtyDate: Date | number,
   formatStr: string
 ): string {
-  requiredArgs(2, arguments)
-
-  const originalDate = toDate(dirtyDate)
-
-  if (!isValid(originalDate)) {
-    throw new RangeError('Invalid time value')
-  }
+  const originalDate = new Date(dirtyDate)
 
   // Convert the date in system timezone to the same date in UTC+00:00 timezone.
   // This ensures that when UTC functions will be implemented, locales will be compatible with them.
