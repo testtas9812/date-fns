@@ -13,7 +13,6 @@ import type { LocaleOptions, WeekStartOptions } from '../types'
  * @param day - the day of the week of the new date
  * @param options - an object with options.
  * @returns the new date with the day of the week set
- * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
  *
  * @example
  * // Set week day to Sunday, with the default weekStartsOn of Sunday:
@@ -40,11 +39,6 @@ export default function setDay(
     opts.weekStartsOn == null
       ? defaultWeekStartsOn
       : Math.trunc(opts.weekStartsOn)
-
-  // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
-  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
-    throw new RangeError('weekStartsOn must be between 0 and 6 inclusively')
-  }
 
   const dateTransformed = new Date(date)
   const dayTransformed = Math.trunc(day)
