@@ -1,5 +1,5 @@
-import toDate from '../toDate/index'
 import isValid from '../isValid/index'
+import toDate from '../toDate/index'
 import addLeadingZeros from '../_lib/addLeadingZeros/index'
 import toInteger from '../_lib/toInteger/index'
 
@@ -40,12 +40,6 @@ export default function formatRFC3339(
   dirtyDate: Date | number,
   dirtyOptions?: FormatRFC3339Options
 ): string {
-  if (arguments.length < 1) {
-    throw new TypeError(
-      `1 arguments required, but only ${arguments.length} present`
-    )
-  }
-
   const originalDate = toDate(dirtyDate)
 
   if (!isValid(originalDate)) {
@@ -53,11 +47,6 @@ export default function formatRFC3339(
   }
 
   const { fractionDigits = 0 } = dirtyOptions || {}
-
-  // Test if fractionDigits is between 0 and 3 _and_ is not NaN
-  if (!(fractionDigits >= 0 && fractionDigits <= 3)) {
-    throw new RangeError('fractionDigits must be between 0 and 3 inclusively')
-  }
 
   const day = addLeadingZeros(originalDate.getDate(), 2)
   const month = addLeadingZeros(originalDate.getMonth() + 1, 2)
