@@ -1,6 +1,3 @@
-import toDate from '../toDate/index'
-import requiredArgs from '../_lib/requiredArgs/index'
-
 /**
  * @name endOfMonth
  * @category Month Helpers
@@ -18,12 +15,10 @@ import requiredArgs from '../_lib/requiredArgs/index'
  * const result = endOfMonth(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 30 2014 23:59:59.999
  */
-export default function endOfMonth(dirtyDate: Date | number): Date {
-  requiredArgs(1, arguments)
-
-  const date = toDate(dirtyDate)
-  const month = date.getMonth()
-  date.setFullYear(date.getFullYear(), month + 1, 0)
-  date.setHours(23, 59, 59, 999)
-  return date
+export default function endOfMonth(date: Date | number): Date {
+  const dateTransformed = new Date(date)
+  const month = dateTransformed.getMonth()
+  dateTransformed.setFullYear(dateTransformed.getFullYear(), month + 1, 0)
+  dateTransformed.setHours(23, 59, 59, 999)
+  return dateTransformed
 }

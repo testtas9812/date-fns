@@ -1,6 +1,3 @@
-import toDate from '../toDate/index'
-import toInteger from '../_lib/toInteger/index'
-import requiredArgs from '../_lib/requiredArgs/index'
 import type { LocaleOptions, WeekStartOptions } from '../types'
 
 /**
@@ -15,7 +12,6 @@ import type { LocaleOptions, WeekStartOptions } from '../types'
  * @param date - the original date
  * @param options - an object with options.
  * @returns the end of a week
- * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
  *
  * @example
  * // The end of a week for 2 September 2014 11:55:00:
@@ -28,33 +24,26 @@ import type { LocaleOptions, WeekStartOptions } from '../types'
  * //=> Sun Sep 07 2014 23:59:59.999
  */
 export default function endOfWeek(
-  dirtyDate: Date | number,
-  dirtyOptions?: LocaleOptions & WeekStartOptions
+  date: Date | number,
+  options?: LocaleOptions & WeekStartOptions
 ): Date {
-  requiredArgs(1, arguments)
+  const opts = options || {}
 
-  const options = dirtyOptions || {}
-
-  const locale = options.locale
+  const locale = opts.locale
   const localeWeekStartsOn =
     locale && locale.options && locale.options.weekStartsOn
   const defaultWeekStartsOn =
-    localeWeekStartsOn == null ? 0 : toInteger(localeWeekStartsOn)
+    localeWeekStartsOn == null ? 0 : Math.trunc(localeWeekStartsOn)
   const weekStartsOn =
-    options.weekStartsOn == null
+    opts.weekStartsOn == null
       ? defaultWeekStartsOn
-      : toInteger(options.weekStartsOn)
+      : Math.trunc(opts.weekStartsOn)
 
-  // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
-  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
-    throw new RangeError('weekStartsOn must be between 0 and 6 inclusively')
-  }
-
-  const date = toDate(dirtyDate)
-  const day = date.getDay()
+  const dateTransformed = new Date(date)
+  const day = dateTransformed.getDay()
   const diff = (day < weekStartsOn ? -7 : 0) + 6 - (day - weekStartsOn)
 
-  date.setDate(date.getDate() + diff)
-  date.setHours(23, 59, 59, 999)
-  return date
+  dateTransformed.setDate(dateTransformed.getDate() + diff)
+  dateTransformed.setHours(23, 59, 59, 999)
+  return dateTransformed
 }
