@@ -1,7 +1,5 @@
-import toDate from '../toDate/index'
 import type { FormatOptions, RepresentationOptions } from '../types'
 import addLeadingZeros from '../_lib/addLeadingZeros/index'
-import requiredArgs from '../_lib/requiredArgs'
 
 /**
  * @name formatISO
@@ -15,8 +13,6 @@ import requiredArgs from '../_lib/requiredArgs'
  * @param options - an object with options.
  * @returns the formatted date string
  * @throws {RangeError} `date` must not be Invalid Date
- * @throws {RangeError} `options.format` must be 'extended' or 'basic'
- * @throws {RangeError} `options.represenation` must be 'date', 'time' or 'complete'
  *
  * @example
  * // Represent 18 September 2019 in ISO 8601 format (local time zone is UTC):
@@ -42,9 +38,7 @@ export default function formatISO(
   date: Date | number,
   options?: FormatOptions & RepresentationOptions
 ): string {
-  requiredArgs(1, arguments)
-
-  const originalDate = toDate(date)
+  const originalDate = new Date(date)
 
   if (isNaN(originalDate.getTime())) {
     throw new RangeError('Invalid time value')
@@ -54,18 +48,6 @@ export default function formatISO(
   const representation = !options?.representation
     ? 'complete'
     : String(options.representation)
-
-  if (format !== 'extended' && format !== 'basic') {
-    throw new RangeError("format must be 'extended' or 'basic'")
-  }
-
-  if (
-    representation !== 'date' &&
-    representation !== 'time' &&
-    representation !== 'complete'
-  ) {
-    throw new RangeError("representation must be 'date', 'time', or 'complete'")
-  }
 
   let result = ''
   let tzOffset = ''
