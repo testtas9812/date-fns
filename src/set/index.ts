@@ -19,6 +19,7 @@ import type { DateValues } from '../types'
  * @param date - the date to be changed
  * @param values - an object with options
  * @returns the new date with options set
+ * @throws {RangeError} `values` must be an object
  *
  * @example
  * // Transform 1 September 2014 into 20 October 2015 in a single line:
@@ -32,6 +33,10 @@ import type { DateValues } from '../types'
  */
 
 export default function set(date: Date | number, values: DateValues): Date {
+  if (typeof values !== 'object' || values === null) {
+    throw new RangeError('values parameter must be an object')
+  }
+
   let dateTransformed = new Date(date)
 
   // Check if date is Invalid Date because Date.prototype.setFullYear ignores the value of Invalid Date
