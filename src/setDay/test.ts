@@ -116,4 +116,13 @@ describe('setDay', () => {
     const result = setDay(new Date(2014, 8 /* Sep */, 1), NaN)
     assert(result instanceof Date && isNaN(result.getTime()))
   })
+
+  it('throws `RangeError` if `options.weekStartsOn` is not convertable to 0, 1, ..., 6 or undefined', () => {
+    const block = () =>
+      setDay(new Date(2014, 8 /* Sep */, 1), 0, {
+        // @ts-expect-error
+        weekStartsOn: NaN,
+      })
+    assert.throws(block, RangeError)
+  })
 })
