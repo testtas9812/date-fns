@@ -1,7 +1,7 @@
+import isValid from '../isValid/index'
 import subMilliseconds from '../subMilliseconds/index'
 import formatters from '../_lib/format/lightFormatters/index'
 import getTimezoneOffsetInMilliseconds from '../_lib/getTimezoneOffsetInMilliseconds/index'
-import isValid from '../isValid/index'
 
 // This RegExp consists of three parts separated by `|`:
 // - (\w)\1* matches any sequences of the same letter
@@ -76,10 +76,10 @@ const unescapedLatinCharacterRegExp = /[a-zA-Z]/
 type Token = keyof typeof formatters
 
 export default function lightFormat(
-  dirtyDate: Date | number,
+  date: Date | number,
   formatStr: string
 ): string {
-  const originalDate = new Date(dirtyDate)
+  const originalDate = new Date(date)
 
   if (!isValid(originalDate)) {
     throw new RangeError('Invalid time value')
