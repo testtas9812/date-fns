@@ -1,6 +1,7 @@
 import subMilliseconds from '../subMilliseconds/index'
 import formatters from '../_lib/format/lightFormatters/index'
 import getTimezoneOffsetInMilliseconds from '../_lib/getTimezoneOffsetInMilliseconds/index'
+import isValid from '../isValid/index'
 
 // This RegExp consists of three parts separated by `|`:
 // - (\w)\1* matches any sequences of the same letter
@@ -15,6 +16,7 @@ const formattingTokensRegExp = /(\w)\1*|''|'(''|[^'])+('|$)|./g
 
 const escapedStringRegExp = /^'([^]*?)'?$/
 const doubleQuoteRegExp = /''/g
+const unescapedLatinCharacterRegExp = /[a-zA-Z]/
 
 /**
  * @name lightFormat
@@ -64,6 +66,7 @@ const doubleQuoteRegExp = /''/g
  * @param date - the original date
  * @param format - the string of tokens
  * @returns the formatted date string
+ * @throws {RangeError} format string contains an unescaped latin alphabet character
  *
  * @example
  * const result = lightFormat(new Date(2014, 1, 11), 'yyyy-MM-dd')
@@ -77,6 +80,10 @@ export default function lightFormat(
   formatStr: string
 ): string {
   const originalDate = new Date(dirtyDate)
+
+  if (!isValid(originalDate)) {
+    throw new RangeError('Invalid time value')
+  }
 
   // Convert the date in system timezone to the same date in UTC+00:00 timezone.
   // This ensures that when UTC functions will be implemented, locales will be compatible with them.
@@ -104,6 +111,14 @@ export default function lightFormat(
       const formatter = formatters[firstCharacter as Token]
       if (formatter) {
         return formatter(utcDate, substring)
+      }
+
+      if (firstCharacter.match(unescapedLatinCharacterRegExp)) {
+        throw new RangeError(
+          'Format string contains an unescaped latin alphabet character `' +
+            firstCharacter +
+            '`'
+        )
       }
 
       return substring

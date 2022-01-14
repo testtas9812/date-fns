@@ -132,4 +132,15 @@ describe('lightFormat', () => {
   it('returns empty string when the format is an empty string', () => {
     assert(lightFormat(Date.now(), '') === '')
   })
+
+  it("throws RangeError if the date isn't valid", () => {
+    assert.throws(
+      lightFormat.bind(null, new Date(NaN), 'MMMM d, yyyy'),
+      RangeError
+    )
+  })
+
+  it('throws RangeError exception if the format string contains an unescaped latin alphabet character', () => {
+    assert.throws(lightFormat.bind(null, date, 'yyyy-MM-dd-nnnn'), RangeError)
+  })
 })
