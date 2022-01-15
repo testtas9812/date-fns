@@ -94,4 +94,13 @@ describe('lastDayOfWeek', () => {
     const result = lastDayOfWeek(new Date(NaN))
     assert(result instanceof Date && isNaN(result.getTime()))
   })
+
+  it('throws `RangeError` if `options.weekStartsOn` is not convertable to 0, 1, ..., 6 or undefined', () => {
+    const block = () =>
+      lastDayOfWeek(new Date(2014, 8 /* Sep */, 2, 11, 55, 0), {
+        // @ts-expect-error
+        weekStartsOn: NaN,
+      })
+    assert.throws(block, RangeError)
+  })
 })

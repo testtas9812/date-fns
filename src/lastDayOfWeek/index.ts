@@ -12,6 +12,7 @@ import type { LocaleOptions, WeekStartOptions } from '../types'
  * @param date - the original date
  * @param options - an object with options.
  * @returns the last day of a week
+ * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
  *
  * @example
  * // The last day of a week for 2 September 2014 11:55:00:
@@ -38,11 +39,17 @@ export default function lastDayOfWeek(
       ? defaultWeekStartsOn
       : Math.trunc(opts.weekStartsOn)
 
+  // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
+    throw new RangeError('weekStartsOn must be between 0 and 6')
+  }
+
   const result = new Date(date)
   const day = result.getDay()
   const diff = (day < weekStartsOn ? -7 : 0) + 6 - (day - weekStartsOn)
 
   result.setHours(0, 0, 0, 0)
   result.setDate(result.getDate() + diff)
+
   return result
 }
