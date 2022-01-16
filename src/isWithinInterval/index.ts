@@ -44,5 +44,10 @@ export default function isWithinInterval(
   const startTime = new Date(interval.start).getTime()
   const endTime = new Date(interval.end).getTime()
 
+  // Throw an exception if start date is after end date or if any date is `Invalid Date`
+  if (!(startTime <= endTime)) {
+    throw new RangeError('Invalid interval')
+  }
+
   return time >= startTime && time <= endTime
 }

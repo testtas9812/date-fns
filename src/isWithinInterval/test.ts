@@ -52,11 +52,45 @@ describe('isWithinInterval', () => {
     assert(result === true)
   })
 
+  it('throws an exception if the start date is after the end date', () => {
+    const block = isWithinInterval.bind(null, new Date(2014, 9 /* Oct */, 31), {
+      start: new Date(2014, 11 /* Dec */, 31),
+      end: new Date(2014, 8 /* Sep */, 1),
+    })
+    assert.throws(block, RangeError)
+  })
+
+  it('throws an exception if the interval is undefined', () => {
+    const block = () =>
+      isWithinInterval(
+        new Date(2014, 9 /* Oct */, 31),
+        // @ts-expect-error
+        undefined
+      )
+    assert.throws(block, TypeError)
+  })
+
   it('returns false if the given date is `Invalid Date`', () => {
     const result = isWithinInterval(new Date(NaN), {
       start: new Date(2014, 8 /* Sep */, 1),
       end: new Date(2014, 11 /* Dec */, 31),
     })
     assert(result === false)
+  })
+
+  it('throws an exception if the start date is `Invalid Date`', () => {
+    const block = isWithinInterval.bind(null, new Date(2014, 9 /* Oct */, 31), {
+      start: new Date(NaN),
+      end: new Date(2014, 8 /* Sep */, 1),
+    })
+    assert.throws(block, RangeError)
+  })
+
+  it('throws an exception if the end date is `Invalid Date`', () => {
+    const block = isWithinInterval.bind(null, new Date(2014, 9 /* Oct */, 31), {
+      start: new Date(2014, 11 /* Dec */, 31),
+      end: new Date(NaN),
+    })
+    assert.throws(block, RangeError)
   })
 })
